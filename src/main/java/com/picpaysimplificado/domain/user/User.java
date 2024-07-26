@@ -2,21 +2,17 @@ package com.picpaysimplificado.domain.user;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.usertype.UserType;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 
-@Table
+@Table(name = "users")
 @Entity(name = "users")
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
+@EqualsAndHashCode(of="id")
 public class User {
 
     @Id
@@ -36,7 +32,7 @@ public class User {
 
     private BigDecimal balance;
 
-    @Enumerated(EnumType.STRING)
     private UserType userType;
+
 
 }
