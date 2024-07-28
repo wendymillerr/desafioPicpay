@@ -1,8 +1,9 @@
-package com.picpaysimplificado.domain.transaction;
+package com.picpaysimplificado.domain.services;
 
 import com.picpaysimplificado.domain.dtos.TransactionDTO;
 import com.picpaysimplificado.domain.repositories.TransactionRepository;
 import com.picpaysimplificado.domain.services.UserService;
+import com.picpaysimplificado.domain.transaction.Transaction;
 import com.picpaysimplificado.domain.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,10 @@ public class TransactionService {
     @Autowired
     private RestTemplate restTemplate;
 
-    public void createTransaction(TransactionDTO transactionDto) throws Exception {
+    @Autowired
+    private NotificationService notification;
+
+    public Transaction createTransaction(TransactionDTO transactionDto) throws Exception {
 
         User sender = this.userService.findUserById(transactionDto.senderId());
         User receiver = this.userService.findUserById(transactionDto.receiverId());
@@ -52,6 +56,9 @@ public class TransactionService {
         this.userService.saveUser(sender);
         this.userService.saveUser(receiver);
 
+        this.notification.sendNotification();
+
+        return transaction;
     }
 
 
