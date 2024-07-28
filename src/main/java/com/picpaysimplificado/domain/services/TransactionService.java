@@ -39,7 +39,7 @@ public class TransactionService {
         userService.validateTransaction(sender, transactionDto.value());
 
         boolean notAuthorized = this.authorizeTransaction(sender, transactionDto.value());
-        if(notAuthorized){
+        if(!notAuthorized){
             throw new Exception("Transação não autorizada");
         }
 
@@ -56,8 +56,8 @@ public class TransactionService {
         this.userService.saveUser(sender);
         this.userService.saveUser(receiver);
 
-        this.notification.sendNotification();
-
+        this.notification.sendNotification(sender, "Transação efetuada com sucesso");
+        this.notification.sendNotification(receiver, "Transação efetuada com sucesso");
         return transaction;
     }
 
@@ -71,9 +71,12 @@ public class TransactionService {
                 Map<String, Object> data = ( Map<String, Object>) responseBody.get("data");
 
                 Boolean authorization = (Boolean) data.get("authorization");
+                System.out.println("Valor do boolean: " + authorization);
+                System.out.println("entrou no if");
                 return authorization != null && authorization;
             }
         }
+        System.out.println("Chegou aqui");
         return false;
     }
 }
