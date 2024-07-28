@@ -18,7 +18,7 @@ public class UserService {
 
     public void validateTransaction(User sender, BigDecimal amount) throws Exception {
 
-        if (sender.getUserType().equals(UserType.MERCHANT)){
+        if (sender.getUserType() == UserType.MERCHANT ){
             throw new Exception("Usuário do tipo lojisto não está autorizado a realizar transação");
         }
         if (sender.getBalance().compareTo(amount) < 0){
@@ -28,6 +28,7 @@ public class UserService {
     }
 
     public User createUser(UserDTO data){
+
         User newUser = new User(data);
         this.saveUser(newUser);
         return newUser;
